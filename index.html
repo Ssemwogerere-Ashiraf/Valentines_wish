@@ -108,10 +108,11 @@
   <div class="butterfly"></div>
   <div class="butterfly"></div>
 
+  <!-- Border with content -->
   <div class="border-animation text-center bg-white p-5 rounded">
     <div id="form-box">
       <h1>Welcome!</h1>
-      <p>Please enter your details to receive your magic from Ashiraf. Use your name as your name:</p>
+      <p>Please enter your details to receive your message from Ashiraf. Use your name as your password:</p>
       <form id="userForm">
         <div class="form-group">
           <label for="name">Name:</label>
@@ -129,6 +130,9 @@
       <a id="whatsapp-link" class="btn btn-success mt-3" target="_blank">Reply on WhatsApp</a>
       <button class="btn btn-secondary mt-3" onclick="resetForm()">Send Another</button>
     </div>
+    <!-- Link to Track Page -->
+    <p class="mt-4">Only officials have access to the link below:</p>
+    <a href="track.html" class="btn btn-info">Go to Track Page</a>
   </div>
 
   <script>
@@ -160,7 +164,7 @@
         greeting.textContent = message;
 
         // Add to WhatsApp link
-        const encodedMessage = encodeURIComponent(`Hello Ashley, this is ${name}. Thank you for the Valentine's Day message! I wish you a happy Valentine's day too💞💞);
+        const encodedMessage = encodeURIComponent(`Hello Ashley, this is ${name}. Thank you for the Valentine's Day message!`);
         whatsappLink.href = `https://wa.me/256701422100?text=${encodedMessage}`;
 
         // Send data to tracking page
@@ -178,11 +182,5 @@
       form.reset();
     }
   </script>
-</div>
-  <!--link to the track page-->
-  <p>Only officials have access to the link below👇</p>
-  <div class="text-center mt-4">
-  <a href="track.html" class="btn btn-info">Go to Track Page</a>
-  
 </body>
 </html>
