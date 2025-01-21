@@ -20,6 +20,10 @@
     #tracking-list {
       display: none;
     }
+
+    .refresh-btn {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -36,15 +40,25 @@
     </div>
 
     <div id="tracking-list">
-      <h2>Recipients:</h2>
-      <ul id="recipient-list" class="list-group"></ul>
+      <h2 class="text-center">Recipients:</h2>
+      <table class="table table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody id="recipient-table-body"></tbody>
+      </table>
+      <button class="btn btn-secondary refresh-btn" onclick="clearPage()">Clear Page</button>
     </div>
   </div>
 
   <script>
     const form = document.getElementById("passwordForm");
     const trackingList = document.getElementById("tracking-list");
-    const recipientList = document.getElementById("recipient-list");
+    const recipientTableBody = document.getElementById("recipient-table-body");
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -54,20 +68,41 @@
         document.getElementById("tracking-form").style.display = "none";
         trackingList.style.display = "block";
 
-        // Fetch recipients from localStorage
-        for (let i = 0; i < localStorage.length; i++) {
-          const name = localStorage.key(i);
-          const time = localStorage.getItem(name);
-
-          const listItem = document.createElement("li");
-          listItem.textContent = `${name} - Received at ${time}`;
-          listItem.className = "list-group-item";
-          recipientList.appendChild(listItem);
-        }
+        // Load recipients into the table
+        loadRecipients();
       } else {
         alert("Incorrect password.");
       }
     });
+
+    // Function to load recipients into the table
+    function loadRecipients() {
+      recipientTableBody.innerHTML = ""; // Clear the table body
+      for (let i = 0; i < localStorage.length; i++) {
+        const name = localStorage.key(i);
+        const timestamp = localStorage.getItem(name);
+        
+        // Parse the date and time from the timestamp
+        const [date, time] = timestamp.split(" ");
+
+        // Add recipient details to the table
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>${date}</td>
+          <td>${time}</td>
+        `;
+        recipientTableBody.appendChild(row);
+      }
+    }
+
+    // Function to clear everything on the page
+    function clearPage() {
+      localStorage.clear(); // Clear all recipient data from localStorage
+      trackingList.style.display = "none"; // Hide the tracking list
+      document.getElementById("tracking-form").style.display = "block"; // Show the form again
+      document.getElementById("tracking-password").value = ""; // Clear the password input
+    }
   </script>
 </body>
 </html>
