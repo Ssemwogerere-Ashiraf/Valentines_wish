@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Recipients</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #tracking-form {
+      text-align: center;
+    }
+
+    #tracking-list {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="tracking-form">
+      <h1>Track Recipients</h1>
+      <p>Please enter the password to view the recipient list:</p>
+      <form id="passwordForm">
+        <div class="form-group">
+          <input type="password" id="tracking-password" class="form-control" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <div id="tracking-list">
+      <h2>Recipients:</h2>
+      <ul id="recipient-list" class="list-group"></ul>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("passwordForm");
+    const trackingList = document.getElementById("tracking-list");
+    const recipientList = document.getElementById("recipient-list");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const password = document.getElementById("tracking-password").value.trim();
+
+      if (password === "Ashley") {
+        document.getElementById("tracking-form").style.display = "none";
+        trackingList.style.display = "block";
+
+        // Fetch recipients from localStorage
+        for (let i = 0; i < localStorage.length; i++) {
+          const name = localStorage.key(i);
+          const time = localStorage.getItem(name);
+
+          const listItem = document.createElement("li");
+          listItem.textContent = `${name} - Received at ${time}`;
+          listItem.className = "list-group-item";
+          recipientList.appendChild(listItem);
+        }
+      } else {
+        alert("Incorrect password.");
+      }
+    });
+  </script>
+</body>
+</html>

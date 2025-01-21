@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine's Day Greetings</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 1s;
+    }
+
+    /* Border Animation */
+    .border-animation {
+      position: relative;
+      padding: 20px;
+      border: 10px solid transparent;
+      animation: borderMove 5s infinite linear;
+    }
+
+    @keyframes borderMove {
+      0% { border-color: red pink red pink; }
+      25% { border-color: pink red pink red; }
+      50% { border-color: red pink pink red; }
+      75% { border-color: pink red red pink; }
+      100% { border-color: red pink red pink; }
+    }
+
+    /* Animated Butterflies */
+    .butterfly {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #ff69b4;
+      border-radius: 50%;
+      animation: fly 10s linear infinite;
+    }
+
+    .butterfly::before,
+    .butterfly::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background-color: #ff69b4;
+      border-radius: 50%;
+    }
+
+    .butterfly::before { top: -15px; left: -20px; }
+    .butterfly::after { top: -15px; right: -20px; }
+
+    .butterfly:nth-child(1) {
+      left: 10%;
+      animation-duration: 8s;
+    }
+
+    .butterfly:nth-child(2) {
+      left: 25%;
+      animation-duration: 12s;
+    }
+
+    .butterfly:nth-child(3) {
+      left: 50%;
+      animation-duration: 10s;
+    }
+
+    .butterfly:nth-child(4) {
+      left: 70%;
+      animation-duration: 15s;
+    }
+
+    .butterfly:nth-child(5) {
+      left: 90%;
+      animation-duration: 9s;
+    }
+
+    @keyframes fly {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+      }
+      50% {
+        transform: translateY(50vh) rotate(45deg);
+      }
+      100% {
+        transform: translateY(-10vh) rotate(0deg);
+      }
+    }
+
+    #message-box {
+      display: none;
+      text-align: center;
+    }
+
+    #user-list {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Butterflies -->
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+  <div class="butterfly"></div>
+
+  <div class="border-animation text-center bg-white p-5 rounded">
+    <div id="form-box">
+      <h1>Welcome!</h1>
+      <p>Please enter your details to receive a Valentine's Day message:</p>
+      <form id="userForm">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-danger">Submit</button>
+      </form>
+    </div>
+    <div id="message-box">
+      <h2 id="greeting"></h2>
+      <a id="whatsapp-link" class="btn btn-success mt-3" target="_blank">Reply on WhatsApp</a>
+      <button class="btn btn-secondary mt-3" onclick="resetForm()">Send Another</button>
+    </div>
+  </div>
+
+  <script>
+    const backgroundColors = ["#FFB6C1", "#FF6347", "#FF4500", "#DC143C", "#FF69B4"];
+    let colorIndex = 0;
+
+    // Change background every 5 seconds
+    setInterval(() => {
+      document.body.style.backgroundColor = backgroundColors[colorIndex];
+      colorIndex = (colorIndex + 1) % backgroundColors.length;
+    }, 5000);
+
+    const form = document.getElementById("userForm");
+    const messageBox = document.getElementById("message-box");
+    const formBox = document.getElementById("form-box");
+    const greeting = document.getElementById("greeting");
+    const whatsappLink = document.getElementById("whatsapp-link");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (password.toLowerCase() === name.toLowerCase()) {
+        formBox.style.display = "none";
+        messageBox.style.display = "block";
+
+        const message = `Happy Valentine's Day, ${name}!  From Ashley`;
+        greeting.textContent = message;
+
+        // Add to WhatsApp link
+        const encodedMessage = encodeURIComponent(`Hello Ashley, this is ${name}. Thank you for the Valentine's Day message!`);
+        whatsappLink.href = `https://wa.me/256701422100?text=${encodedMessage}`;
+
+        // Send data to tracking page
+        const receivedTime = new Date().toLocaleString();
+        localStorage.setItem(name, receivedTime);
+      } else {
+        alert("Incorrect password. Please try again.");
+      }
+    });
+
+    // Reset the form
+    function resetForm() {
+      formBox.style.display = "block";
+      messageBox.style.display = "none";
+      form.reset();
+    }
+  </script>
+</body>
+</html>
